@@ -6,7 +6,7 @@ public class ListaZdarzen implements KolejkaZdarzen {
     private Zdarzenie head;
     private Zdarzenie tail;
 
-    ListaZdarzen() {
+    public ListaZdarzen() {
         this.tail = new Zdarzenie(Integer.MAX_VALUE, Integer.MAX_VALUE, null);
         this.head = new Zdarzenie(0, 0, this.tail);
     }
@@ -18,11 +18,16 @@ public class ListaZdarzen implements KolejkaZdarzen {
         z.setNext(current.getNext());
         current.setNext(z);
     }
-    public void getZdarzenie(){
+    public Zdarzenie getZdarzenie(){
         assert(!czyPusta());
-        //TODO
+        Zdarzenie z = head.getNext();
+        head.setNext(z.getNext());
+        return z;
     }
     public boolean czyPusta(){
         return head.getNext() == tail;
+    }
+    public Zdarzenie getHead(){
+        return head;
     }
 }

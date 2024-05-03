@@ -9,10 +9,10 @@ public class PasazerWsiadl extends Zdarzenie{
     private Tramwaj tramwaj;
     private Przystanek przystanek;
     
-    public PasazerWsiadl(Pasazer pasazer, Przystanek przystanek, Tramwaj tramwaj,
+    public PasazerWsiadl(Przystanek przystanek, Tramwaj tramwaj,
                          int dzien, int minuta, Zdarzenie next) {
         super(dzien, minuta, next);
-        this.pasazer = pasazer;
+        this.pasazer = przystanek.pierwszyPasazer();
         this.przystanek = przystanek;
         this.tramwaj = tramwaj;
     }
@@ -23,4 +23,12 @@ public class PasazerWsiadl extends Zdarzenie{
                 " wsiadl do tramwaju nr " + tramwaj.getNumer() + " linii "
                 + tramwaj.getLinia().getnumerLinii() +  " na przystanku " + przystanek.getNazwa();
     }
+
+    public void wykonaj(){
+        assert (!tramwaj.czyPelny() && przystanek.czyPusty());
+        tramwaj.dodajPasazera(pasazer);
+        przystanek.usunPasazera();
+        System.out.println(this.toString());
+    }
 }
+// przewd wywolaniem trzeba sprawdzac czy pelny pusty?

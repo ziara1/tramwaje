@@ -25,4 +25,26 @@ public class Przystanek {
         head.dodajPasazera(new ListaPasazerow(p, null));
         zajete++;
     }
+    public boolean czyPelny(){
+        return zajete >= pojemnosc;
+    }
+    public boolean czyPusty(){
+        return head.getNext() == tail;
+    }
+    public Pasazer pierwszyPasazer(){
+        return head.getNext().getVal();
+    }
+    public void usunPasazera(){
+        if (!this.czyPusty())
+            head.usunNastepnego();
+    }
+    public int ileZajetych(){
+        return zajete;
+    }
+    public ListaPasazerow getHead(){
+        return head;
+    }
+    public ListaPasazerow getTail(){
+        return tail;
+    }
 }

@@ -11,4 +11,10 @@ public class Trasa {
     public void setTrasa(Przystanek przystanek, int czas, int i){
         trasa[i] = new ParaTrasy(przystanek, czas);
     }
+    public int getDlugoscTrasy(){
+        return dlugoscTrasy;
+    }
+    public ParaTrasy getPara(int i){
+        return trasa[i];
+    }
 }

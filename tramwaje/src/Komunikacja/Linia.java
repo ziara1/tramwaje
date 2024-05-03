@@ -21,4 +21,26 @@ public class Linia {
     public int getnumerLinii() {
         return numerLinii;
     }
+    public Tramwaj getTramwaj(int i){
+        return tramwaje[i];
+    }
+    public int getLiczbaTramwajow(){
+        return liczbaTramwajow;
+    }
+    public int getCzasTrasy(){
+        int res = 0;
+        for (int i = 0; i < trasa.getDlugoscTrasy(); i++){
+            res += trasa.getPara(i).getCzas();
+        }
+        return res * 2; // bo w dwie strony czas
+    }
+    public int getDlugoscTrasy(){
+        return trasa.getDlugoscTrasy();
+    }
+    public Przystanek getPrzystanek(int i){
+        return trasa.getPara(i).getPrzystanek();
+    }
+    public int getCzasPrzystanku(int i){
+        return trasa.getPara(i).getCzas();
+    }
 }

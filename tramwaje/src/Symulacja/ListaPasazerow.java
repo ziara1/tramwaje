@@ -14,9 +14,13 @@ public class ListaPasazerow {
         p.next = this.next;
         this.next = p;
     }
-    public Pasazer usunNastepnego(){
-        Pasazer pasazer = this.next.val;
+    public void usunNastepnego(){
         this.next = this.next.next;
-        return pasazer;
+    }
+    public ListaPasazerow getNext(){
+        return this.next;
+    }
+    public Pasazer getVal(){
+        return this.val;
     }
 }
