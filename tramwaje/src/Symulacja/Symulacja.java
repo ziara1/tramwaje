@@ -5,6 +5,7 @@ import Komunikacja.Pasazer;
 import Komunikacja.Linia;
 import Komunikacja.Tramwaj;
 import Zdarzenia.PasazerPrzyszedl;
+import Zdarzenia.PasazerWsiadl;
 import Zdarzenia.TramwajPrzyjechal;
 import Zdarzenia.Zdarzenie;
 
@@ -21,6 +22,8 @@ public class Symulacja {
     private int liczbaPrzystankow;
     private int liczbaPasazerow;
     private ListaZdarzen kolejka;
+    private int sumaPrzejazdow;
+    private int przejazdyDnia;
 
 
     public void wczytajDane(){
@@ -73,7 +76,8 @@ public class Symulacja {
         kolejka = new ListaZdarzen();
     }
     void rozpocznijSymulacje(){
-
+        sumaPrzejazdow = 0;
+        przejazdyDnia = 0;
         for (int i = 0; i < liczbaDni; i++){
             for (int j = 0; j < liczbaPasazerow; j++){
                 Przystanek p = pasazerowie[j].getPrzystanek();
@@ -84,11 +88,16 @@ public class Symulacja {
             dodajTramwaje(i);
             while (!kolejka.czyPusta()){
                 Zdarzenie z = kolejka.getZdarzenie();
+
                 z.wykonaj();
             }
+            sumaPrzejazdow += przejazdyDnia;
+            System.out.println("Liczba przejazdow dnia " + i + ": " + przejazdyDnia);
+            koniecDnia();
         }
-
+        System.out.println("Laczna liczba przejazdow: " + sumaPrzejazdow);
     }
+
     void dodajTramwaje(int dzien){
         for (int i = 0; i < liczbaLinii; i++){
             int odstep = linie[i].getCzasTrasy() / linie[i].getLiczbaTramwajow();
@@ -99,9 +108,10 @@ public class Symulacja {
     }
     void dodajTramwaj(Tramwaj t, int dzien, int czas, int index){
         int kierunek = 1;// ustawic go dobrze
+        boolean pierwszyPrzejazd = true;
+        if (index != 0)
+            kierunek = -1;
         while (czas <= 1380){
-            if (index == 0 || index == t.getLinia().getDlugoscTrasy())
-                kierunek *= -1;
             kolejka.dodajZdarzenie(new TramwajPrzyjechal(t.getLinia().getPrzystanek(index),
                     t, dzien, czas, null));
             if (kierunek == -1){
@@ -116,6 +126,24 @@ public class Symulacja {
                 czas += t.getLinia().getCzasPrzystanku(index);
             }
             index += kierunek;
+            if (index == 0 || index == t.getLinia().getDlugoscTrasy() - 1)
+                kierunek *= -1;
+
+            if (!pierwszyPrzejazd && ((index == 1 && kierunek == 1) || (
+                    index == t.getLinia().getDlugoscTrasy() - 2 && kierunek == -1)))
+                czas += t.getCzasPostoju();
+
+            pierwszyPrzejazd = false;
+        }
+    }
+    void koniecDnia(){
+        for (int i = 0; i < liczbaPrzystankow; i++){
+            przystanki[i].oproznij();
+        }
+        for (int i = 0; i < liczbaLinii; i++){
+            for (int j = 0; j < linie[i].getLiczbaTramwajow(); j++){
+                linie[i].getTramwaj(j).oproznij();
+            }
         }
     }
 

@@ -35,5 +35,8 @@ public class Tramwaj extends Pojazd {
     public int ileZajetych(){
         return zajete;
     }
-
+    public void oproznij(){
+        super.oproznij();
+        zajete = 0;
+    }
 }

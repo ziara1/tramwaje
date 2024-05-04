@@ -25,7 +25,8 @@ public class TramwajPrzyjechal extends Zdarzenie{
 
     public void wykonaj(){
         ListaPasazerow p = przystanek.getHead().getNext();
-        ListaPasazerow t = przystanek.getHead().getNext();
+        ListaPasazerow t = tramwaj.getHead().getNext();
+        System.out.println(toString());
        while (t != tramwaj.getTail() && !przystanek.czyPelny()){
             if (t.getVal().getCelPodrozy() == przystanek){
                 (new PasazerWysiadl(przystanek, tramwaj, t.getVal(),

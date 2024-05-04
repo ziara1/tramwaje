@@ -35,8 +35,10 @@ public class Przystanek {
         return head.getNext().getVal();
     }
     public void usunPasazera(){
-        if (!this.czyPusty())
+        if (!this.czyPusty()) {
             head.usunNastepnego();
+            zajete--;
+        }
     }
     public int ileZajetych(){
         return zajete;
@@ -46,5 +48,9 @@ public class Przystanek {
     }
     public ListaPasazerow getTail(){
         return tail;
+    }
+    public void oproznij(){
+        zajete = 0;
+        head = new ListaPasazerow(null, tail);
     }
 }

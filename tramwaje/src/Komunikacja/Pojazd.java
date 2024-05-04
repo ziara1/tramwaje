@@ -47,5 +47,11 @@ abstract public class Pojazd {
     public ListaPasazerow getTail(){
         return tail;
     }
+    public int getCzasPostoju(){
+        return getLinia().getCzasPrzystanku(getLinia().getDlugoscTrasy() - 1);
+    }
+    public void oproznij(){
+        head = new ListaPasazerow(null, tail);
+    }
 }
 // mozna przelozyc tu zajete
