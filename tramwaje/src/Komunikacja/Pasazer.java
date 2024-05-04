@@ -5,6 +5,7 @@ public class Pasazer {
     private int numer;
     private Przystanek celPodrozy;
     private int czasCzekania;
+    private int liczbaCzekan;
 
     public Pasazer(Przystanek przystanek, int numer) {
         this.bliskiPrzystanek = przystanek;
@@ -28,5 +29,11 @@ public class Pasazer {
     }
     public void dodajCzasCzekania(int czasCzekania){
         this.czasCzekania += czasCzekania;
+    }
+    public int getLiczbaCzekan(){
+        return liczbaCzekan;
+    }
+    public void zwiekszLiczbeCzekan(){
+        liczbaCzekan++;
     }
 }

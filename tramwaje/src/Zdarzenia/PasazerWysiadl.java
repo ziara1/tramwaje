@@ -26,7 +26,7 @@ public class PasazerWysiadl extends Zdarzenie{
 
     public void wykonaj(){
         assert (!przystanek.czyPelny() && tramwaj.czyPusty());
-        przystanek.dodajPasazera(pasazer);
+        przystanek.dodajPasazera(pasazer, getMinuta());
         tramwaj.usunPasazera(pasazer);
         System.out.println(this.toString());
     }

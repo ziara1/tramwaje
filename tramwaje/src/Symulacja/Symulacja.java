@@ -79,6 +79,8 @@ public class Symulacja {
     void rozpocznijSymulacje(){
         sumaPrzejazdow = 0;
         przejazdyDnia = 0;
+        int czasCzekaniaDzis = 0;
+        int liczbaCzekan = 0;
         for (int i = 0; i < liczbaDni; i++){
             przejazdyDnia = 0;
             for (int j = 0; j < liczbaPasazerow; j++){
@@ -98,6 +100,13 @@ public class Symulacja {
             sumaPrzejazdow += przejazdyDnia;
             System.out.println("Liczba przejazdow dnia " + i + ": " + przejazdyDnia);
             koniecDnia();
+            for (int j = 0; j < liczbaPasazerow; j++){
+                czasCzekaniaDzis += pasazerowie[j].getCzasCzekania();
+                liczbaCzekan += pasazerowie[j].getLiczbaCzekan();
+            }
+            int srCzas = czasCzekaniaDzis / liczbaCzekan;
+            System.out.println("Sredni czas czekania dnia " + i + ": " + srCzas + " minut");
+            czasCzekania += czasCzekaniaDzis;
         }
         System.out.println("Laczna liczba przejazdow: " + sumaPrzejazdow);
         System.out.println("Laczny czas czekania: " +
@@ -119,6 +128,7 @@ public class Symulacja {
             }
         }
     }
+
     void dodajTramwaj(Tramwaj t, int dzien, int czas, int index){
         int kierunek = 1;// ustawic go dobrze
         boolean pierwszyPrzejazd = true;
@@ -149,6 +159,7 @@ public class Symulacja {
             pierwszyPrzejazd = false;
         }
     }
+
     void koniecDnia(){
         for (int i = 0; i < liczbaPrzystankow; i++){
             przystanki[i].oproznij();

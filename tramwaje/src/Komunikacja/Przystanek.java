@@ -19,11 +19,13 @@ public class Przystanek {
     public String getNazwa(){
         return nazwa;
     }
-    public void dodajPasazera(Pasazer p){
+    public void dodajPasazera(Pasazer p, int czas){
         if (pojemnosc == zajete)
             return;
         head.dodajPasazera(new ListaPasazerow(p, null));
         zajete++;
+        p.dodajCzasCzekania(-czas);
+        p.zwiekszLiczbeCzekan();
     }
     public boolean czyPelny(){
         return zajete >= pojemnosc;
@@ -34,8 +36,9 @@ public class Przystanek {
     public Pasazer pierwszyPasazer(){
         return head.getNext().getVal();
     }
-    public void usunPasazera(){
+    public void usunPasazera(int czas){
         if (!this.czyPusty()) {
+            pierwszyPasazer().dodajCzasCzekania(czas);
             head.usunNastepnego();
             zajete--;
         }
@@ -50,7 +53,8 @@ public class Przystanek {
         return tail;
     }
     public void oproznij(){
-        zajete = 0;
-        head = new ListaPasazerow(null, tail);
+        for (int i = 0; i < zajete; i++){
+            usunPasazera(1380);
+        }
     }
 }

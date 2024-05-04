@@ -22,7 +22,7 @@ public class PasazerPrzyszedl extends Zdarzenie{
 
     public void wykonaj(){
         assert (!przystanek.czyPelny());
-        przystanek.dodajPasazera(pasazer);
+        przystanek.dodajPasazera(pasazer, getMinuta());
         System.out.println(this.toString());
     }
 }
