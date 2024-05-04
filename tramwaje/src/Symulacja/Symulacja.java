@@ -24,6 +24,7 @@ public class Symulacja {
     private ListaZdarzen kolejka;
     private int sumaPrzejazdow;
     private int przejazdyDnia;
+    private int czasCzekania;
 
 
     public void wczytajDane(){
@@ -79,6 +80,7 @@ public class Symulacja {
         sumaPrzejazdow = 0;
         przejazdyDnia = 0;
         for (int i = 0; i < liczbaDni; i++){
+            przejazdyDnia = 0;
             for (int j = 0; j < liczbaPasazerow; j++){
                 Przystanek p = pasazerowie[j].getPrzystanek();
                 Losowanie losujGodzine = new Losowanie();
@@ -88,21 +90,32 @@ public class Symulacja {
             dodajTramwaje(i);
             while (!kolejka.czyPusta()){
                 Zdarzenie z = kolejka.getZdarzenie();
-
                 z.wykonaj();
+                if (z instanceof TramwajPrzyjechal) {
+                    przejazdyDnia += ((TramwajPrzyjechal) z).getLiczbaPrzejazdow();
+                }
             }
             sumaPrzejazdow += przejazdyDnia;
             System.out.println("Liczba przejazdow dnia " + i + ": " + przejazdyDnia);
             koniecDnia();
         }
         System.out.println("Laczna liczba przejazdow: " + sumaPrzejazdow);
+        System.out.println("Laczny czas czekania: " +
+                czasCzekania / 60 + " godzin " + czasCzekania % 60 + " minut");
+
     }
 
     void dodajTramwaje(int dzien){
         for (int i = 0; i < liczbaLinii; i++){
             int odstep = linie[i].getCzasTrasy() / linie[i].getLiczbaTramwajow();
             for (int j = 0; j < linie[i].getLiczbaTramwajow(); j++){
-                dodajTramwaj(linie[i].getTramwaj(j), dzien, 360 + (odstep * j), 0);
+                if (j % 2 == 0) {
+                    dodajTramwaj(linie[i].getTramwaj(j), dzien, 360 + (odstep * j), 0);
+                }
+                else {
+                    dodajTramwaj(linie[i].getTramwaj(j), dzien,
+                            360 + (odstep * j), linie[i].getDlugoscTrasy() - 1);
+                }
             }
         }
     }

@@ -8,12 +8,14 @@ import Symulacja.ListaPasazerow;
 public class TramwajPrzyjechal extends Zdarzenie{
     private Tramwaj tramwaj;
     private Przystanek przystanek;
+    private int liczbaPrzejazdow;
 
     public TramwajPrzyjechal(Przystanek przystanek, Tramwaj tramwaj,
                          int dzien, int minuta, Zdarzenie next) {
         super(dzien, minuta, next);
         this.przystanek = przystanek;
         this.tramwaj = tramwaj;
+        liczbaPrzejazdow = 0;
     }
 
     @Override
@@ -37,6 +39,11 @@ public class TramwajPrzyjechal extends Zdarzenie{
        while (p != przystanek.getTail() && !tramwaj.czyPelny()){
            (new PasazerWsiadl(przystanek, tramwaj, getDzien(), getMinuta(), null)).wykonaj();
            p = p.getNext();
+           liczbaPrzejazdow++;
        }
+    }
+
+    public int getLiczbaPrzejazdow(){
+        return liczbaPrzejazdow;
     }
 }
