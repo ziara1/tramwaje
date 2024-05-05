@@ -3,7 +3,7 @@ package Zdarzenia;
 import Komunikacja.Pasazer;
 import Komunikacja.Przystanek;
 
-public class PasazerPrzyszedl extends Zdarzenie{
+public class PasazerPrzyszedl extends Zdarzenie{ //przyszedl na przystanek
     private Pasazer pasazer;
     private Przystanek przystanek;
 

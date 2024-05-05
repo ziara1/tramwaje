@@ -32,15 +32,15 @@ public class Linia {
         for (int i = 0; i < trasa.getDlugoscTrasy(); i++){
             res += trasa.getPara(i).getCzas();
         }
-        return res * 2; // bo w dwie strony czas
+        return res * 2; // bo trasa w ta i z powrotem
     }
     public int getDlugoscTrasy(){
         return trasa.getDlugoscTrasy();
     }
-    public Przystanek getPrzystanek(int i){
+    public Przystanek getPrzystanek(int i){ // i-ty przystanek
         return trasa.getPara(i).getPrzystanek();
     }
-    public int getCzasPrzystanku(int i){
+    public int getCzasPrzystanku(int i){ // czas miedzy i-tym a i+1-ym
         return trasa.getPara(i).getCzas();
     }
     public int znajdzIndeks(Przystanek p){
@@ -49,7 +49,7 @@ public class Linia {
                 return i;
             }
         }
-        assert(true);
+        assert(true); // jesli nie ma tego przystanku w trasie
         return -1;
     }
 }

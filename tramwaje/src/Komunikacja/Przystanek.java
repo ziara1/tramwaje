@@ -24,7 +24,8 @@ public class Przystanek {
             return;
         head.dodajPasazera(new ListaPasazerow(p, null));
         zajete++;
-        p.dodajCzasCzekania(-czas);
+        p.dodajCzasCzekania(-czas); // w momencie usuwania pasazera dodaje
+        // czas, czyli w sumie wychodzi czas usuniecia - czas dodania
         p.zwiekszLiczbeCzekan();
     }
     public boolean czyPelny(){
@@ -43,18 +44,15 @@ public class Przystanek {
             zajete--;
         }
     }
-    public int ileZajetych(){
-        return zajete;
-    }
     public ListaPasazerow getHead(){
         return head;
     }
     public ListaPasazerow getTail(){
         return tail;
     }
-    public void oproznij(){
+    public void oproznij(){ // pasazerowie usunieci na koniec dnia (o 24:00)
         for (int i = 0; i < zajete; i++){
-            usunPasazera(1380);
+            usunPasazera(1440);
         }
     }
 }

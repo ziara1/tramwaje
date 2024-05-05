@@ -36,6 +36,6 @@ public class Zdarzenie {
         this.next = next;
     }
     public void wykonaj(){
-         System.out.println("usun to pozniej");
+         System.out.println(this);
     }
 }

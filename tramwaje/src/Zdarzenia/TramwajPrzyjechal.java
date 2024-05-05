@@ -28,20 +28,25 @@ public class TramwajPrzyjechal extends Zdarzenie{
     public void wykonaj(){
         ListaPasazerow p = przystanek.getHead().getNext();
         ListaPasazerow t = tramwaj.getHead().getNext();
-      //  System.out.println(toString());
-       while (t != tramwaj.getTail() && !przystanek.czyPelny()){
-            if (t.getVal().getCelPodrozy() == przystanek){
-                (new PasazerWysiadl(przystanek, tramwaj, t.getVal(),
-                        getDzien(), getMinuta(), null)).wykonaj();
+        System.out.println(toString());
+        // jesli jest po 23:00 to pasazerowie nie jezdza
+        // czyli dajemy tylko komunikat ze tramwaj przyjechal
+        if (getMinuta() <= 1380) {
+            while (t != tramwaj.getTail() && !przystanek.czyPelny()) {
+                // szukamy pasazerow ktorzy chca wysiasc na tym przystanku
+                if (t.getVal().getCelPodrozy() == przystanek) {
+                    (new PasazerWysiadl(przystanek, tramwaj, t.getVal(),
+                            getDzien(), getMinuta(), null)).wykonaj();
+                }
+                t = t.getNext();
             }
-           t = t.getNext();
-       }
-       while (p != przystanek.getTail() && !tramwaj.czyPelny()){
-           (new PasazerWsiadl(przystanek,
-                   tramwaj, getDzien(), getMinuta(), null)).wykonaj();
-           p = p.getNext();
-           liczbaPrzejazdow++;
-       }
+            while (p != przystanek.getTail() && !tramwaj.czyPelny()) {
+                (new PasazerWsiadl(przystanek,
+                        tramwaj, getDzien(), getMinuta(), null)).wykonaj();
+                p = p.getNext();
+                liczbaPrzejazdow++; // ile osob wsiadlo w tym zdarzeniu
+            }
+        }
     }
 
     public int getLiczbaPrzejazdow(){

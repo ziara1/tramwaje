@@ -10,7 +10,7 @@ public class ListaZdarzen implements KolejkaZdarzen {
         this.tail = new Zdarzenie(Integer.MAX_VALUE, Integer.MAX_VALUE, null);
         this.head = new Zdarzenie(0, 0, this.tail);
     }
-    public void dodajZdarzenie(Zdarzenie z){
+    public void dodajZdarzenie(Zdarzenie z){ // dodaje zdarzenie wedlug czasu
         Zdarzenie current = head;
         while (current.getNext() != tail &&
                 current.getNext().getCzas() <= z.getCzas()) {
@@ -19,7 +19,7 @@ public class ListaZdarzen implements KolejkaZdarzen {
         z.setNext(current.getNext());
         current.setNext(z);
     }
-    public Zdarzenie getZdarzenie(){
+    public Zdarzenie getZdarzenie(){ // zdejmuje pierwsze zdarzenie z kolejki
         assert(!czyPusta());
         Zdarzenie z = head.getNext();
         head.setNext(z.getNext());

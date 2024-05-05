@@ -10,7 +10,7 @@ public class ListaPasazerow {
         this.val = pasazer;
         this.next = next;
     }
-    public void dodajPasazera(ListaPasazerow p){
+    public void dodajPasazera(ListaPasazerow p){ // dodaje pasazera p po this
         p.next = this.next;
         this.next = p;
     }

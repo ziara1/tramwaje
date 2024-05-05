@@ -26,13 +26,6 @@ abstract public class Pojazd {
         head.dodajPasazera(new ListaPasazerow(p, null));
         zajete++;
     }
-    //usuwa puerwszwego z brzegu
-    public void usunPasazera(){
-        if (zajete > 0) {
-            head.usunNastepnego();
-            zajete--;
-        }
-    }
     public void usunPasazera(Pasazer p){
         if (zajete > 0) {
             ListaPasazerow find = head;
@@ -49,7 +42,7 @@ abstract public class Pojazd {
     public ListaPasazerow getTail(){
         return tail;
     }
-    public int getCzasPostoju(){
+    public int getCzasPostoju(){ // czas w ostatniej parze trasy
         return linia.getCzasPrzystanku(linia.getDlugoscTrasy() - 1);
     }
     public void oproznij(){
@@ -63,4 +56,3 @@ abstract public class Pojazd {
         return zajete == 0;
     }
 }
-// mozna przelozyc tu zajete

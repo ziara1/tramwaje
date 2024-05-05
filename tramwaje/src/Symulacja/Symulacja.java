@@ -23,7 +23,7 @@ public class Symulacja {
     private int czasCzekania;
     private int liczbaCzekan;
 
-    public void wczytajDane(){
+    public void wczytajDane(){/////////////////////////////////////////////////////////////////////////////////////////////
 
         Scanner scanner = new Scanner(System.in);
         liczbaDni = scanner.nextInt();
@@ -54,7 +54,8 @@ public class Symulacja {
             linie[i] = new Linia(liczbaTramwajowLinii, dlugoscTrasy, i);
 
             for (int j = 0; j < liczbaTramwajowLinii; j++){
-                linie[i].setTramwaje((new Tramwaj(pojemnoscTramwaju, numerPojazdu++, linie[i])), j);
+                linie[i].setTramwaje((new Tramwaj
+                        (pojemnoscTramwaju, numerPojazdu++, linie[i])), j);
             }
 
             for (int j = 0; j < dlugoscTrasy; j++){
@@ -80,13 +81,16 @@ public class Symulacja {
         int czasCzekaniaDzis = 0;
         for (int i = 0; i < liczbaDni; i++){
             przejazdyDnia = 0;
+            czasCzekaniaDzis = 0;
             dodajPasazerow(i);
             dodajTramwaje(i);
             while (!kolejka.czyPusta()){
                 Zdarzenie z = kolejka.getZdarzenie();
                 z.wykonaj();
                 if (z instanceof TramwajPrzyjechal) {
-                    przejazdyDnia += ((TramwajPrzyjechal) z).getLiczbaPrzejazdow();
+                    // liczy ile osob wsiadlo (przejechalo) w kazdym zdarzeniu
+                    przejazdyDnia +=
+                            ((TramwajPrzyjechal) z).getLiczbaPrzejazdow();
                 }
             }
             koniecDnia();
@@ -104,54 +108,62 @@ public class Symulacja {
     public void dodajPasazerow(int dzien){
         for (int j = 0; j < liczbaPasazerow; j++){
             Przystanek p = pasazerowie[j].getPrzystanek();
+            // losuje godzine o ktorej pasazer przychodzi rano
             int godzina = Losowanie.losuj(360, 720);
-            kolejka.dodajZdarzenie(new PasazerPrzyszedl(p, pasazerowie[j] , dzien, godzina, kolejka.getHead()));
+            kolejka.dodajZdarzenie(new PasazerPrzyszedl
+                    (p, pasazerowie[j] , dzien, godzina, kolejka.getHead()));
         }
     }
 
     public void dodajTramwaje(int dzien){
         for (int i = 0; i < liczbaLinii; i++){
-            int odstep = linie[i].getCzasTrasy() / linie[i].getLiczbaTramwajow();
-            for (int j = 0; j < linie[i].getLiczbaTramwajow(); j++){
-                if (j % 2 == 0) {
-                    dodajTramwaj(linie[i].getTramwaj(j), dzien, 360 + (odstep * j), 0);
+            Linia l = linie[i];
+            // odstep miedzy wyjazdem z zajezdni kolejnych tramwajow
+            int odstep = l.getCzasTrasy() / l.getLiczbaTramwajow();
+            for (int j = 0; j < l.getLiczbaTramwajow(); j++){
+                if (j % 2 == 0) { // zaczyna na jednym koncu trasy
+                    dodajTramwaj
+                            (l.getTramwaj(j), dzien, 360 + (odstep * j), 0);
                 }
-                else {
-                    dodajTramwaj(linie[i].getTramwaj(j), dzien,
-                            360 + (odstep * j), linie[i].getDlugoscTrasy() - 1);
+                else { // zaczyna na drugim koncu trasy
+                    dodajTramwaj(l.getTramwaj(j), dzien,
+                            360 + (odstep * j), l.getDlugoscTrasy() - 1);
                 }
             }
         }
     }
-
+    // dodaje zatrzymania sie poszczegolnego tramwaju w danym dniu do kolejki
     public void dodajTramwaj(Tramwaj t, int dzien, int czas, int index){
-        int kierunek = 1;
+        int kierunek = 1; // 1 lub -1, zalezy w ktora strone jedzie tramwaj
         Linia l = t.getLinia();
+        // po to zeby w 1. przejezdzie tramwaj nie stal na petli na poczatku
         boolean pierwszyPrzejazd = true;
+        // index od ktorego zaczynamy jazde, czyli poczatek albo koniec trasy
         if (index != 0)
             kierunek = -1;
-        while (czas <= 1380){
-            kolejka.dodajZdarzenie(new TramwajPrzyjechal(l.getPrzystanek(index),
-                    t, dzien, czas, null));
-            if (kierunek == -1){
-                if (index == 0){
+        // jesli jest po 23:00 to tramwaj tylko dojezdza do zajezdni
+        while (czas <= 1440 &&
+                !((index == 0 || index == l.getDlugoscTrasy()) && czas > 1380)){
+            kolejka.dodajZdarzenie(new TramwajPrzyjechal
+                    (l.getPrzystanek(index), t, dzien, czas, null));
+            if (kierunek == -1){ // w zaleznosci w ktora strone jedzie tramwaj
+                // trzeba pobrac czas z roznych indeksow, bo przechowuja one
+                // czasy miedzy przystankami (w indeksie i czas miedzy i a i+1)
+                if (index == 0)
                     czas += l.getCzasPrzystanku(l.getDlugoscTrasy() - 1);
-                }
-                else {
+                else
                     czas += l.getCzasPrzystanku(index - 1);
-                }
             }
             else {
                 czas += l.getCzasPrzystanku(index);
             }
             index += kierunek;
             if (index == 0 || index == l.getDlugoscTrasy() - 1)
-                kierunek *= -1;
-
+                kierunek *= -1; // zawraca
+            // dodanie czasu postoju jesli tramwaj jest na ktoryms koncu
             if (!pierwszyPrzejazd && ((index == 1 && kierunek == 1) || (
                     index == l.getDlugoscTrasy() - 2 && kierunek == -1)))
                 czas += t.getCzasPostoju();
-
             pierwszyPrzejazd = false;
         }
     }

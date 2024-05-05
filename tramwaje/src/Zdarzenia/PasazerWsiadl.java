@@ -13,6 +13,7 @@ public class PasazerWsiadl extends Zdarzenie{
     public PasazerWsiadl(Przystanek przystanek, Tramwaj tramwaj,
                          int dzien, int minuta, Zdarzenie next) {
         super(dzien, minuta, next);
+        // wsiada pierwszy pasazer z brzegu
         this.pasazer = przystanek.pierwszyPasazer();
         this.przystanek = przystanek;
         this.tramwaj = tramwaj;
@@ -27,10 +28,13 @@ public class PasazerWsiadl extends Zdarzenie{
                 + pasazer.getCelPodrozy().getNazwa();
     }
 
-    public void wylosujPrzystanek(){
+    public void wylosujPrzystanek(){ // losuje przystanek docelowy dla pasazera
+        // taki ktory jest na trasie, ale nie jest aktualnym przystankiem
         int index = tramwaj.getLinia().znajdzIndeks(przystanek);
         Losowanie losujCel = new Losowanie();
         int cel = losujCel.losuj(0, tramwaj.getLinia().getDlugoscTrasy() - 2);
+        // jesli cel jest niemniejszy od indexu, to musimy przesunac cel o 1,
+        // bo rzutowalismy indeksy >= od indeksu aktualnego przystanku, o 1 nizej
         if (cel >= index)
             cel++;
         pasazer.ustawCel(tramwaj.getLinia().getPrzystanek(cel));
@@ -44,4 +48,3 @@ public class PasazerWsiadl extends Zdarzenie{
         System.out.println(this.toString());
     }
 }
-// przewd wywolaniem trzeba sprawdzac czy pelny pusty?
