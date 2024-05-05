@@ -14,8 +14,10 @@ public class Zdarzenie {
     @Override
     public String toString(){
         if (minuta % 60 < 10)
-            return "Dzien " + dzien + ". godzina " + minuta / 60 + ":0" + minuta % 60 + ".";
-        return "Dzien " + dzien + ". godzina " + minuta / 60 + ":" + minuta % 60 + ".";
+            return "Dzien " + dzien + ". godzina " +
+                    minuta / 60 + ":0" + minuta % 60 + ".";
+        return "Dzien " + dzien + ". godzina " +
+                minuta / 60 + ":" + minuta % 60 + ".";
     }
 
     public int getCzas(){
@@ -37,11 +39,3 @@ public class Zdarzenie {
          System.out.println("usun to pozniej");
     }
 }
-/*
-pasazer wsiadl
-pasazer wysiadl
-pasazer przyszedl na przystanek
-
-takie cos ze kaazdy trwmwaj i kazdy przystanek ma swoja liste pasazerow linked lisste
-i zmienna ktora trzyma ilosc miejsc zapelnionych
- */

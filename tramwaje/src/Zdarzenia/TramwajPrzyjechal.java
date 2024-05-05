@@ -20,8 +20,8 @@ public class TramwajPrzyjechal extends Zdarzenie{
 
     @Override
     public String toString() {
-        return super.toString() + " Tramwaj nr " + tramwaj.getNumer() + " linii "
-                + tramwaj.getLinia().getnumerLinii() +  " " +
+        return super.toString() + " Tramwaj nr " + tramwaj.getNumer() +
+                " linii " + tramwaj.getLinia().getnumerLinii() +  " " +
                 " zatrzymal sie na przystanku " + przystanek.getNazwa();
     }
 
@@ -37,7 +37,8 @@ public class TramwajPrzyjechal extends Zdarzenie{
            t = t.getNext();
        }
        while (p != przystanek.getTail() && !tramwaj.czyPelny()){
-           (new PasazerWsiadl(przystanek, tramwaj, getDzien(), getMinuta(), null)).wykonaj();
+           (new PasazerWsiadl(przystanek,
+                   tramwaj, getDzien(), getMinuta(), null)).wykonaj();
            p = p.getNext();
            liczbaPrzejazdow++;
        }

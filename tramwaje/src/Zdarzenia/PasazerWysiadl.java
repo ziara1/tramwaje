@@ -9,8 +9,8 @@ public class PasazerWysiadl extends Zdarzenie{
     private Tramwaj tramwaj;
     private Przystanek przystanek;
 
-    public PasazerWysiadl(Przystanek przystanek, Tramwaj tramwaj, Pasazer pasazer,
-                         int dzien, int minuta, Zdarzenie next) {
+    public PasazerWysiadl(Przystanek przystanek, Tramwaj tramwaj, Pasazer
+            pasazer, int dzien, int minuta, Zdarzenie next) {
         super(dzien, minuta, next);
         this.pasazer = pasazer;
         this.przystanek = przystanek;
@@ -20,8 +20,9 @@ public class PasazerWysiadl extends Zdarzenie{
     @Override
     public String toString() {
         return super.toString() + " " + " Pasazer " + pasazer.getNumer() +
-                " wysiadl z tramwaju nr " + tramwaj.getNumer() + " linii "
-                + tramwaj.getLinia().getnumerLinii() +  " na przystanku " + przystanek.getNazwa();
+                " wysiadl z tramwaju nr " + tramwaj.getNumer() + " linii " +
+                tramwaj.getLinia().getnumerLinii() +  " na przystanku " +
+                przystanek.getNazwa();
     }
 
     public void wykonaj(){

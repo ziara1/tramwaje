@@ -12,7 +12,8 @@ public class ListaZdarzen implements KolejkaZdarzen {
     }
     public void dodajZdarzenie(Zdarzenie z){
         Zdarzenie current = head;
-        while (current.getNext() != tail && current.getNext().getCzas() <= z.getCzas()) {
+        while (current.getNext() != tail &&
+                current.getNext().getCzas() <= z.getCzas()) {
             current = current.getNext();
         }
         z.setNext(current.getNext());

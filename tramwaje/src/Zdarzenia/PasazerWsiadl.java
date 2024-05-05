@@ -22,8 +22,9 @@ public class PasazerWsiadl extends Zdarzenie{
     public String toString() {
         return super.toString() + " " + " Pasazer " + pasazer.getNumer() +
                 " wsiadl do tramwaju nr " + tramwaj.getNumer() + " linii "
-                + tramwaj.getLinia().getnumerLinii() +  " na przystanku " + przystanek.getNazwa()
-                + " z zamiarem dojechania na przystanek " + pasazer.getCelPodrozy().getNazwa();
+                + tramwaj.getLinia().getnumerLinii() +  " na przystanku " +
+                przystanek.getNazwa() + " z zamiarem dojechania na przystanek "
+                + pasazer.getCelPodrozy().getNazwa();
     }
 
     public void wylosujPrzystanek(){
