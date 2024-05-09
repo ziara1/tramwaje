@@ -31,12 +31,13 @@ public class PasazerWsiadl extends Zdarzenie{
     public void wylosujPrzystanek(){ // losuje przystanek docelowy dla pasazera
         // taki ktory jest na trasie, ale nie jest aktualnym przystankiem
         int index = tramwaj.getLinia().znajdzIndeks(przystanek);
-        Losowanie losujCel = new Losowanie();
-        int cel = losujCel.losuj(0, tramwaj.getLinia().getDlugoscTrasy() - 2);
-        // jesli cel jest niemniejszy od indexu, to musimy przesunac cel o 1,
-        // bo rzutowalismy indeksy >= od indeksu aktualnego przystanku, o 1 nizej
-        if (cel >= index)
-            cel++;
+        int cel = 0;
+        if (tramwaj.getKierunek() == 1){
+            cel = Losowanie.losuj(index + 1, tramwaj.getLinia().getDlugoscTrasy() - 1);
+        }
+        else{
+            cel = Losowanie.losuj(0, index - 1);
+        }
         pasazer.ustawCel(tramwaj.getLinia().getPrzystanek(cel));
     }
 

@@ -8,6 +8,7 @@ abstract public class Pojazd {
     private ListaPasazerow head;
     private ListaPasazerow tail;
     private int zajete;
+    private int kierunek;
 
     public Pojazd(int numerBoczny, Linia linia) {
         this.numerBoczny = numerBoczny;
@@ -15,6 +16,7 @@ abstract public class Pojazd {
         this.zajete = 0;
         tail = new ListaPasazerow(null, null);
         head = new ListaPasazerow(null, tail);
+        kierunek = 1;
     }
     public int getNumer(){
         return numerBoczny;
@@ -54,5 +56,11 @@ abstract public class Pojazd {
     }
     public boolean czyPusty(){
         return zajete == 0;
+    }
+    public int getKierunek(){
+        return kierunek;
+    }
+    public void zmienKierunek(){
+        kierunek *= -1;
     }
 }

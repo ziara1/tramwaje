@@ -40,6 +40,12 @@ public class TramwajPrzyjechal extends Zdarzenie{
                 }
                 t = t.getNext();
             }
+            int index = tramwaj.getLinia().znajdzIndeks(przystanek);
+            int dlugoscTrasy = tramwaj.getLinia().getDlugoscTrasy();
+            if ((index == 0 && tramwaj.getKierunek() == -1) ||
+                    (index == dlugoscTrasy - 1 && tramwaj.getKierunek() == 1)){
+                return; // jesli tramwaj dojechal do konca trasy
+            }
             while (p != przystanek.getTail() && !tramwaj.czyPelny()) {
                 (new PasazerWsiadl(przystanek,
                         tramwaj, getDzien(), getMinuta(), null)).wykonaj();
