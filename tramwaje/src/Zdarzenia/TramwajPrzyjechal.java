@@ -9,13 +9,17 @@ public class TramwajPrzyjechal extends Zdarzenie{
     private Tramwaj tramwaj;
     private Przystanek przystanek;
     private int liczbaPrzejazdow;
+    private int index;
+    private int kierunek;
 
     public TramwajPrzyjechal(Przystanek przystanek, Tramwaj tramwaj,
-                         int dzien, int minuta, Zdarzenie next) {
+                         int dzien, int minuta, Zdarzenie next, int index, int kierunek) {
         super(dzien, minuta, next);
         this.przystanek = przystanek;
         this.tramwaj = tramwaj;
         liczbaPrzejazdow = 0;
+        this.index = index;
+        this.kierunek = kierunek;
     }
 
     @Override
@@ -26,7 +30,6 @@ public class TramwajPrzyjechal extends Zdarzenie{
     }
 
     public void wykonaj(){
-        ListaPasazerow p = przystanek.getHead().getNext();
         ListaPasazerow t = tramwaj.getHead().getNext();
         System.out.println(toString());
         // jesli jest po 23:00 to pasazerowie nie jezdza
@@ -40,15 +43,15 @@ public class TramwajPrzyjechal extends Zdarzenie{
                 }
                 t = t.getNext();
             }
-            int index = tramwaj.getLinia().znajdzIndeks(przystanek);
             int dlugoscTrasy = tramwaj.getLinia().getDlugoscTrasy();
-            if ((index == 0 && tramwaj.getKierunek() == -1) ||
-                    (index == dlugoscTrasy - 1 && tramwaj.getKierunek() == 1)){
+            if ((index == 0 && kierunek == -1) ||
+                    (index == dlugoscTrasy - 1 && kierunek == 1)){
                 return; // jesli tramwaj dojechal do konca trasy
             }
+            ListaPasazerow p = przystanek.getHead().getNext();
             while (p != przystanek.getTail() && !tramwaj.czyPelny()) {
                 (new PasazerWsiadl(przystanek,
-                        tramwaj, getDzien(), getMinuta(), null)).wykonaj();
+                        tramwaj, getDzien(), getMinuta(), null, kierunek)).wykonaj();
                 p = p.getNext();
                 liczbaPrzejazdow++; // ile osob wsiadlo w tym zdarzeniu
             }

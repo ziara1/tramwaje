@@ -63,4 +63,10 @@ abstract public class Pojazd {
     public void zmienKierunek(){
         kierunek *= -1;
     }
+    public void ustawKierunek(int k){
+        if (k < 0)
+            kierunek = -1;
+        else
+            kierunek = 1;
+    }
 }

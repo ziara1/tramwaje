@@ -122,62 +122,18 @@ public class Symulacja {
             int odstep = l.getCzasTrasy() / l.getLiczbaTramwajow();
             for (int j = 0; j < l.getLiczbaTramwajow(); j++){
                 if (j % 2 == 0) { // zaczyna na jednym koncu trasy
+                    l.getTramwaj(j).ustawKierunek(1);
                     dodajTramwaj
                             (l.getTramwaj(j), dzien, 360 + (odstep * j / 2));
                 }
                 else { // zaczyna na drugim koncu trasy
-                    l.getTramwaj(j).zmienKierunek();
+                    l.getTramwaj(j).ustawKierunek(-1);
                     dodajTramwaj
                             (l.getTramwaj(j), dzien, 360 + (odstep * (j - 1) / 2));
                 }
             }
         }
     }
-    //dodalem /2 przy odstep * j i zmien kierunek()
-
-
-
-
-    /*
-    // dodaje zatrzymania sie poszczegolnego tramwaju w danym dniu do kolejki
-    public void dodajTramwaj(Tramwaj t, int dzien, int czas){
-        Linia l = t.getLinia();
-        // po to zeby w 1. przejezdzie tramwaj nie stal na petli na poczatku
-        boolean pierwszyPrzejazd = true;
-        int index = 0;
-        int kierunek = t.getKierunek();
-        // index od ktorego zaczynamy jazde, czyli poczatek albo koniec trasy
-        if (kierunek == -1)
-            index = l.getDlugoscTrasy() - 1;
-        int poczatek = index;
-        // jesli jest po 23:00 to tramwaj tylko dojezdza do zajezdni
-        while (czas <= 1440 &&  !(index == poczatek && czas > 1380)){
-            kierunek = t.getKierunek();
-            kolejka.dodajZdarzenie(new TramwajPrzyjechal
-                    (l.getPrzystanek(index), t, dzien, czas, null));
-            if (kierunek == -1){ // w zaleznosci w ktora strone jedzie tramwaj
-                // trzeba pobrac czas z roznych indeksow, bo przechowuja one
-                // czasy miedzy przystankami (w indeksie i czas miedzy i a i+1)
-                if (index == 0)
-                    czas += l.getCzasPrzystanku(l.getDlugoscTrasy() - 1);
-                else
-                    czas += l.getCzasPrzystanku(index - 1);
-            }
-            else {
-                czas += l.getCzasPrzystanku(index);
-            }
-            index += kierunek;
-            if (index == 0 || index == l.getDlugoscTrasy() - 1)
-                t.zmienKierunek(); // zawraca
-            // dodanie czasu postoju jesli tramwaj jest na ktoryms koncu
-            if (!pierwszyPrzejazd && ((index == 1 && kierunek == 1) || (
-                    index == l.getDlugoscTrasy() - 2 && kierunek == -1)))
-                czas += t.getCzasPostoju();
-            pierwszyPrzejazd = false;
-        }
-    }
-
-     */
 
     // dodaje zatrzymania sie poszczegolnego tramwaju w danym dniu do kolejki
     public void dodajTramwaj(Tramwaj t, int dzien, int czas){
@@ -188,14 +144,13 @@ public class Symulacja {
 
         while(czas <= 1440 && !(czas > 1380 && (index == poczatek))){
             kolejka.dodajZdarzenie(new TramwajPrzyjechal
-                    (l.getPrzystanek(index), t, dzien, czas, null));
+                    (l.getPrzystanek(index), t, dzien, czas, null, index, t.getKierunek()));
             int indexCzasu = index;
             if (t.getKierunek() == -1){
                 indexCzasu--;
                 if (indexCzasu == -1)
                     indexCzasu = l.getDlugoscTrasy() - 1;
             }
-
             if ((index == 0 && t.getKierunek() == -1) ||
                     (index == l.getDlugoscTrasy() - 1 && t.getKierunek() == 1)) {
                 t.zmienKierunek();

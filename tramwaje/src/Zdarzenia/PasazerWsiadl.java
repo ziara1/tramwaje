@@ -9,14 +9,16 @@ public class PasazerWsiadl extends Zdarzenie{
     private Pasazer pasazer;
     private Tramwaj tramwaj;
     private Przystanek przystanek;
+    private int kierunek;
     
     public PasazerWsiadl(Przystanek przystanek, Tramwaj tramwaj,
-                         int dzien, int minuta, Zdarzenie next) {
+                         int dzien, int minuta, Zdarzenie next, int kierunek) {
         super(dzien, minuta, next);
         // wsiada pierwszy pasazer z brzegu
         this.pasazer = przystanek.pierwszyPasazer();
         this.przystanek = przystanek;
         this.tramwaj = tramwaj;
+        this.kierunek = kierunek;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class PasazerWsiadl extends Zdarzenie{
         // taki ktory jest na trasie, ale nie jest aktualnym przystankiem
         int index = tramwaj.getLinia().znajdzIndeks(przystanek);
         int cel = 0;
-        if (tramwaj.getKierunek() == 1){
+        if (kierunek == 1){
             cel = Losowanie.losuj(index + 1, tramwaj.getLinia().getDlugoscTrasy() - 1);
         }
         else{
