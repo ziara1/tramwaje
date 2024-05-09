@@ -51,7 +51,7 @@ public class Przystanek {
         return tail;
     }
     public void oproznij(){ // pasazerowie usunieci na koniec dnia (o 24:00)
-        for (int i = 0; i < zajete; i++){
+        while (zajete > 0){
             usunPasazera(1440);
         }
     }

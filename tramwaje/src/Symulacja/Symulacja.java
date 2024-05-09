@@ -79,7 +79,7 @@ public class Symulacja {
         liczbaCzekan = 0;
         int przejazdyDnia = 0;
         int czasCzekaniaDzis = 0;
-        for (int i = 0; i < liczbaDni; i++){
+        for (int i = 1; i <= liczbaDni; i++){
             przejazdyDnia = 0;
             czasCzekaniaDzis = 0;
             dodajPasazerow(i);
@@ -142,7 +142,7 @@ public class Symulacja {
         if (t.getKierunek() == -1)
             index = poczatek = l.getDlugoscTrasy() - 1;
 
-        while(czas <= 1440 && !(czas > 1380 && (index == poczatek))){
+        while(czas <= 1440 && !(czas > 1380 && index == poczatek)){
             kolejka.dodajZdarzenie(new TramwajPrzyjechal
                     (l.getPrzystanek(index), t, dzien, czas, null, index, t.getKierunek()));
             int indexCzasu = index;
@@ -159,6 +159,8 @@ public class Symulacja {
             index += t.getKierunek();
             czas += l.getCzasPrzystanku(indexCzasu);
         }
+        kolejka.dodajZdarzenie(new TramwajPrzyjechal
+                (l.getPrzystanek(index), t, dzien, czas, null, index, t.getKierunek()));
     }
 
     public void koniecDnia(){
@@ -188,19 +190,21 @@ public class Symulacja {
     }
 
     public void wypiszStatystyki() {
-        System.out.println("Laczna liczba przejazdow: " + sumaPrzejazdow);
+        System.out.println("Łączna liczba przejazdów: " + sumaPrzejazdow);
         int srCzas = 0;
         if (liczbaCzekan != 0) {
-            srCzas = czasCzekania / liczbaCzekan;
+            srCzas = (60 * czasCzekania) / liczbaCzekan;
         }
-        int godziny = srCzas / 60;
-        int minuty = srCzas % 60;
+        int godziny = srCzas / 3600; // liczba sekund w godzinie
+        int minuty = (srCzas % 3600) / 60; // reszta po odjęciu godzin, podzielona na minuty
+        int sekundy = srCzas % 60; // reszta po podzieleniu przez 60, czyli pozostałe sekundy
         if (godziny > 0)
-            System.out.println("Sredni czas czekania " + ": "
-                    + godziny + "h " + minuty + "m");
+            System.out.println("Średni czas czekania: " + godziny + "h " + minuty + "m " + sekundy + "s");
+        else if (minuty > 0)
+            System.out.println("Średni czas czekania: " + minuty + "m " + sekundy + "s");
         else
-            System.out.println("Sredni czas czekania " +
-                    ": " + minuty + "m");
+            System.out.println("Średni czas czekania: " + sekundy + "s");
     }
+
 
 }
