@@ -37,6 +37,7 @@ public class Przystanek {
     public Pasazer pierwszyPasazer(){
         return head.getNext().getVal();
     }
+    // usuwa pierwszego z brzegu pasazera
     public void usunPasazera(int czas){
         if (!this.czyPusty()) {
             pierwszyPasazer().dodajCzasCzekania(czas);

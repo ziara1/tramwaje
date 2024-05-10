@@ -1,5 +1,6 @@
 package Symulacja;
 
+import Zdarzenia.KolejkaZdarzen;
 import Zdarzenia.Zdarzenie;
 
 public class ListaZdarzen implements KolejkaZdarzen {

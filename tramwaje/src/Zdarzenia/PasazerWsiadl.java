@@ -1,5 +1,6 @@
 package Zdarzenia;
 
+import Komunikacja.Linia;
 import Komunikacja.Pasazer;
 import Komunikacja.Przystanek;
 import Komunikacja.Tramwaj;
@@ -12,8 +13,8 @@ public class PasazerWsiadl extends Zdarzenie{
     private int kierunek;
     
     public PasazerWsiadl(Przystanek przystanek, Tramwaj tramwaj,
-                         int dzien, int minuta, Zdarzenie next, int kierunek) {
-        super(dzien, minuta, next);
+                         int d, int m, Zdarzenie z, int kierunek) {
+        super(d, m, z);
         // wsiada pierwszy pasazer z brzegu
         this.pasazer = przystanek.pierwszyPasazer();
         this.przystanek = przystanek;
@@ -31,16 +32,18 @@ public class PasazerWsiadl extends Zdarzenie{
     }
 
     public void wylosujPrzystanek(){ // losuje przystanek docelowy dla pasazera
-        // taki ktory jest na trasie, ale nie jest aktualnym przystankiem
-        int index = tramwaj.getLinia().znajdzIndeks(przystanek);
+        // indeks aktualnego przystanku
+        Linia l = tramwaj.getLinia();
+        int index = l.znajdzIndeks(przystanek);
         int cel = 0;
-        if (kierunek == 1){
-            cel = Losowanie.losuj(index + 1, tramwaj.getLinia().getDlugoscTrasy() - 1);
-        }
-        else{
+        // w zaleznosci od tego w ktora strone jedzie tramwaj, wybieramy
+        // przedzial z ktorego bedziemy losowac przystanek (przed/po tramwaju)
+        if (kierunek == 1)
+            cel = Losowanie.losuj(index + 1, l.getDlugoscTrasy() - 1);
+        else
             cel = Losowanie.losuj(0, index - 1);
-        }
-        pasazer.ustawCel(tramwaj.getLinia().getPrzystanek(cel));
+
+        pasazer.ustawCel(l.getPrzystanek(cel));
     }
 
     public void wykonaj(){

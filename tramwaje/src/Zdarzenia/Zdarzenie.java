@@ -5,10 +5,10 @@ public class Zdarzenie {
     private int minuta;
     private Zdarzenie next;
 
-    public Zdarzenie(int dzien, int minuta, Zdarzenie next) {
-        this.dzien = dzien;
-        this.minuta = minuta;
-        this.next = next;
+    public Zdarzenie(int d, int m, Zdarzenie z) {
+        dzien = d;
+        minuta = m;
+        next = z;
     }
 
     @Override

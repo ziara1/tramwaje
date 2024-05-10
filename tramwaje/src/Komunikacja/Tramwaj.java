@@ -1,6 +1,5 @@
 package Komunikacja;
 
-import Symulacja.ListaPasazerow;
 
 public class Tramwaj extends Pojazd {
     private int pojemnosc;

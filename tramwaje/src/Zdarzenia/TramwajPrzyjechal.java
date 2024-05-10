@@ -1,6 +1,5 @@
 package Zdarzenia;
 
-import Komunikacja.Pasazer;
 import Komunikacja.Przystanek;
 import Komunikacja.Tramwaj;
 import Symulacja.ListaPasazerow;
@@ -12,9 +11,9 @@ public class TramwajPrzyjechal extends Zdarzenie{
     private int index;
     private int kierunek;
 
-    public TramwajPrzyjechal(Przystanek przystanek, Tramwaj tramwaj,
-                         int dzien, int minuta, Zdarzenie next, int index, int kierunek) {
-        super(dzien, minuta, next);
+    public TramwajPrzyjechal(Przystanek przystanek, Tramwaj tramwaj, int d,
+                             int m, Zdarzenie z, int index, int kierunek) {
+        super(d, m, z);
         this.przystanek = przystanek;
         this.tramwaj = tramwaj;
         liczbaPrzejazdow = 0;
@@ -49,8 +48,8 @@ public class TramwajPrzyjechal extends Zdarzenie{
         }
         ListaPasazerow p = przystanek.getHead().getNext();
         while (p != przystanek.getTail() && !tramwaj.czyPelny()) {
-            (new PasazerWsiadl(przystanek,
-                    tramwaj, getDzien(), getMinuta(), null, kierunek)).wykonaj();
+            (new PasazerWsiadl(przystanek, tramwaj, getDzien(),
+                    getMinuta(), null, kierunek)).wykonaj();
             p = p.getNext();
             liczbaPrzejazdow++; // ile osob wsiadlo w tym zdarzeniu
         }

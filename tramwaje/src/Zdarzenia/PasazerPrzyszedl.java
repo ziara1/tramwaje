@@ -8,8 +8,8 @@ public class PasazerPrzyszedl extends Zdarzenie{ //przyszedl na przystanek
     private Przystanek przystanek;
 
     public PasazerPrzyszedl(Przystanek przystanek, Pasazer pasazer,
-                         int dzien, int minuta, Zdarzenie next) {
-        super(dzien, minuta, next);
+                            int d, int m, Zdarzenie z) {
+        super(d, m, z);
         this.pasazer = pasazer;
         this.przystanek = przystanek;
     }

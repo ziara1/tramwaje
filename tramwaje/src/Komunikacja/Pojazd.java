@@ -9,6 +9,8 @@ abstract public class Pojazd {
     private ListaPasazerow tail;
     private int zajete;
     private int kierunek;
+    // kierunek, w ktorym jedzie tramwaj. 1 jesli jedzie w strone
+    // rosnacych indeksow, -1 jesli malejacych
 
     public Pojazd(int numerBoczny, Linia linia) {
         this.numerBoczny = numerBoczny;
@@ -43,9 +45,6 @@ abstract public class Pojazd {
     }
     public ListaPasazerow getTail(){
         return tail;
-    }
-    public int getCzasPostoju(){ // czas w ostatniej parze trasy
-        return linia.getCzasPrzystanku(linia.getDlugoscTrasy() - 1);
     }
     public void oproznij(){
         head = new ListaPasazerow(null, tail);

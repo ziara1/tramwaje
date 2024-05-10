@@ -4,7 +4,7 @@ public class Linia {
     private int numerLinii;
     private Trasa trasa;
     private int liczbaTramwajow;
-    private Tramwaj tramwaje[];
+    private Tramwaj[] tramwaje;
 
     public Linia(int liczbaTramwajow, int dlugoscTrasy, int numerLinii) {
         this.liczbaTramwajow = liczbaTramwajow;

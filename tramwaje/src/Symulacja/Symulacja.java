@@ -15,59 +15,39 @@ public class Symulacja {
     private Przystanek[] przystanki;
     private Linia[] linie;
     private int liczbaDni;
-    private int liczbaLinii;
-    private int liczbaPrzystankow;
-    private int liczbaPasazerow;
     private ListaZdarzen kolejka;
     private int sumaPrzejazdow;
     private int czasCzekania;
     private int liczbaCzekan;
 
-    public void wczytajDane(){/////////////////////////////////////////////////////////////////////////////////////////////
 
+    public void wczytajDane(){
         Scanner scanner = new Scanner(System.in);
         liczbaDni = scanner.nextInt();
         int pojemnoscPrzystanku = scanner.nextInt();
-        liczbaPrzystankow = scanner.nextInt();
-        przystanki = new Przystanek[liczbaPrzystankow];
-
-        for (int i = 0; i < liczbaPrzystankow; i++){
-            String nazwa = scanner.next();
-            przystanki[i] = new Przystanek(nazwa, pojemnoscPrzystanku);
-        }
-
-        liczbaPasazerow = scanner.nextInt();
-        pasazerowie = new Pasazer[liczbaPasazerow];
-
-        for (int i = 0; i < liczbaPasazerow; i++){
-            int x = Losowanie.losuj(0, liczbaPrzystankow - 1);
-            pasazerowie[i] = new Pasazer(przystanki[x], i);
-        }
-
+        przystanki = new Przystanek[scanner.nextInt()];
+        for (int i = 0; i < przystanki.length; i++)
+            przystanki[i] = new Przystanek(scanner.next(), pojemnoscPrzystanku);
+        pasazerowie = new Pasazer[scanner.nextInt()];
+        for (int i = 0; i < pasazerowie.length; i++)
+            pasazerowie[i] = new Pasazer
+                    (przystanki[Losowanie.losuj(0, przystanki.length - 1)], i);
         int pojemnoscTramwaju = scanner.nextInt();
-        liczbaLinii = scanner.nextInt();
-        linie = new Linia[liczbaLinii];
+        linie = new Linia[scanner.nextInt()];
         int numerPojazdu = 0;
-        for (int i = 0; i < liczbaLinii; i++){
+        for (int i = 0; i < linie.length; i++){
             int liczbaTramwajowLinii = scanner.nextInt();
             int dlugoscTrasy = scanner.nextInt();
             linie[i] = new Linia(liczbaTramwajowLinii, dlugoscTrasy, i);
-
-            for (int j = 0; j < liczbaTramwajowLinii; j++){
+            for (int j = 0; j < liczbaTramwajowLinii; j++)
                 linie[i].setTramwaje((new Tramwaj
                         (pojemnoscTramwaju, numerPojazdu++, linie[i])), j);
-            }
-
             for (int j = 0; j < dlugoscTrasy; j++){
                 String nazwa = scanner.next();
                 int czas = scanner.nextInt();
-                int index = 0;
-                for (int k = 0; k < liczbaPrzystankow; k++){
-                    if (nazwa.equals(przystanki[k].getNazwa()))
-                        index = k;
-                }
-
-                linie[i].setTrasa(przystanki[index], czas, j);
+                for (Przystanek przystanek : przystanki)
+                    if (nazwa.equals(przystanek.getNazwa()))
+                        linie[i].setTrasa(przystanek, czas, j);
             }
         }
         kolejka = new ListaZdarzen();
@@ -94,9 +74,9 @@ public class Symulacja {
                 }
             }
             koniecDnia();
-            for (int j = 0; j < liczbaPasazerow; j++){
-                czasCzekaniaDzis += pasazerowie[j].getCzasCzekania();
-                liczbaCzekan += pasazerowie[j].getLiczbaCzekan();
+            for (Pasazer pasazer : pasazerowie) {
+                czasCzekaniaDzis += pasazer.getCzasCzekania();
+                liczbaCzekan += pasazer.getLiczbaCzekan();
             }
             wypiszStatystykiDnia(przejazdyDnia, czasCzekaniaDzis, i);
             sumaPrzejazdow += przejazdyDnia;
@@ -106,27 +86,27 @@ public class Symulacja {
     }
 
     public void dodajPasazerow(int dzien){
-        for (int j = 0; j < liczbaPasazerow; j++){
-            Przystanek p = pasazerowie[j].getPrzystanek();
+        for (Pasazer pasazer : pasazerowie) {
+            Przystanek p = pasazer.getPrzystanek();
             // losuje godzine o ktorej pasazer przychodzi rano
+            // 360 - 6:00, 720 - 12:00
             int godzina = Losowanie.losuj(360, 720);
             kolejka.dodajZdarzenie(new PasazerPrzyszedl
-                    (p, pasazerowie[j] , dzien, godzina, kolejka.getHead()));
+                    (p, pasazer, dzien, godzina, kolejka.getHead()));
         }
     }
 
     public void dodajTramwaje(int dzien){
-        for (int i = 0; i < liczbaLinii; i++){
-            Linia l = linie[i];
+        for (Linia l : linie) {
             // odstep miedzy wyjazdem z zajezdni kolejnych tramwajow
             int odstep = l.getCzasTrasy() / l.getLiczbaTramwajow();
-            for (int j = 0; j < l.getLiczbaTramwajow(); j++){
+            //360 - 6:00, godzina, o ktorej tramwaje zaczynaja jezdzic
+            for (int j = 0; j < l.getLiczbaTramwajow(); j++) {
                 if (j % 2 == 0) { // zaczyna na jednym koncu trasy
                     l.getTramwaj(j).ustawKierunek(1);
                     dodajTramwaj
                             (l.getTramwaj(j), dzien, 360 + (odstep * j / 2));
-                }
-                else { // zaczyna na drugim koncu trasy
+                } else { // zaczyna na drugim koncu trasy
                     l.getTramwaj(j).ustawKierunek(-1);
                     dodajTramwaj
                             (l.getTramwaj(j), dzien, 360 + (odstep * (j - 1) / 2));
@@ -141,35 +121,40 @@ public class Symulacja {
         int index = 0, poczatek = 0;
         if (t.getKierunek() == -1)
             index = poczatek = l.getDlugoscTrasy() - 1;
-
+        // 1440 - 0:00, koniec dnia
+        // 1380 - 23:00, po tej godzinie tramwaje koncza tylko ostatnie kolko
         while(czas <= 1440 && !(czas > 1380 && index == poczatek)){
-            kolejka.dodajZdarzenie(new TramwajPrzyjechal
-                    (l.getPrzystanek(index), t, dzien, czas, null, index, t.getKierunek()));
-            int indexCzasu = index;
+            kolejka.dodajZdarzenie(new TramwajPrzyjechal(l.getPrzystanek(index)
+                           , t, dzien, czas, null, index, t.getKierunek()));
+            int indexCzasu = index; // index, z ktorej pary trasy pobrac czas
+            // jesli jedziemy w kierunku malejacym, to pobieramy z poprzedniego
+            // bo pod indexem i jest czas miedzy i a i+1 przystankiem
             if (t.getKierunek() == -1){
                 indexCzasu--;
                 if (indexCzasu == -1)
                     indexCzasu = l.getDlugoscTrasy() - 1;
             }
-            if ((index == 0 && t.getKierunek() == -1) ||
-                    (index == l.getDlugoscTrasy() - 1 && t.getKierunek() == 1)) {
+            // tramwaj zawraca. odejmujemy od indeksu kierunek, zeby tramwaj
+            // jeszcze "zostal" na tym przystanku (po zawroceniu na petli)
+            if ((index == l.getDlugoscTrasy() - 1 && t.getKierunek() == 1)
+                    || (index == 0 && t.getKierunek() == -1)) {
                 t.zmienKierunek();
                 index -= t.getKierunek();
             }
             index += t.getKierunek();
             czas += l.getCzasPrzystanku(indexCzasu);
-        }
-        kolejka.dodajZdarzenie(new TramwajPrzyjechal
-                (l.getPrzystanek(index), t, dzien, czas, null, index, t.getKierunek()));
+        } // ostatnie zdarzenie dnia, tramwaj przyjezdza na ostatni przystanek
+        kolejka.dodajZdarzenie(new TramwajPrzyjechal(l.getPrzystanek(index),
+                t, dzien, czas, null, index, t.getKierunek()));
     }
 
     public void koniecDnia(){
-        for (int i = 0; i < liczbaPrzystankow; i++){
-            przystanki[i].oproznij();
+        for (Przystanek przystanek : przystanki) {
+            przystanek.oproznij();
         }
-        for (int i = 0; i < liczbaLinii; i++){
-            for (int j = 0; j < linie[i].getLiczbaTramwajow(); j++){
-                linie[i].getTramwaj(j).oproznij();
+        for (Linia linia : linie) {
+            for (int j = 0; j < linia.getLiczbaTramwajow(); j++) {
+                linia.getTramwaj(j).oproznij();
             }
         }
     }
@@ -192,16 +177,19 @@ public class Symulacja {
     public void wypiszStatystyki() {
         System.out.println("Łączna liczba przejazdów: " + sumaPrzejazdow);
         int srCzas = 0;
+        // czas czekania jest wyrazony w minutach, *60, zeby bylo w sekundach
         if (liczbaCzekan != 0) {
             srCzas = (60 * czasCzekania) / liczbaCzekan;
         }
-        int godziny = srCzas / 3600; // liczba sekund w godzinie
-        int minuty = (srCzas % 3600) / 60; // reszta po odjęciu godzin, podzielona na minuty
-        int sekundy = srCzas % 60; // reszta po podzieleniu przez 60, czyli pozostałe sekundy
+        int godziny = srCzas / 3600;
+        int minuty = (srCzas % 3600) / 60;
+        int sekundy = srCzas % 60;
         if (godziny > 0)
-            System.out.println("Średni czas czekania: " + godziny + "h " + minuty + "m " + sekundy + "s");
+            System.out.println("Średni czas czekania: "
+                    + godziny + "h " + minuty + "m " + sekundy + "s");
         else if (minuty > 0)
-            System.out.println("Średni czas czekania: " + minuty + "m " + sekundy + "s");
+            System.out.println("Średni czas czekania: "
+                    + minuty + "m " + sekundy + "s");
         else
             System.out.println("Średni czas czekania: " + sekundy + "s");
     }

@@ -9,9 +9,9 @@ public class PasazerWysiadl extends Zdarzenie{
     private Tramwaj tramwaj;
     private Przystanek przystanek;
 
-    public PasazerWysiadl(Przystanek przystanek, Tramwaj tramwaj, Pasazer
-            pasazer, int dzien, int minuta, Zdarzenie next) {
-        super(dzien, minuta, next);
+    public PasazerWysiadl(Przystanek przystanek, Tramwaj tramwaj,
+                          Pasazer pasazer, int d, int m, Zdarzenie z) {
+        super(d, m, z);
         this.pasazer = pasazer;
         this.przystanek = przystanek;
         this.tramwaj = tramwaj;
