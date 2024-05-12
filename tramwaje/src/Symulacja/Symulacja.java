@@ -16,14 +16,16 @@ public class Symulacja {
     private Linia[] linie;
     private int liczbaDni;
     private ListaZdarzen kolejka;
-    private int sumaPrzejazdow;
-    private int czasCzekania;
+    private int[] liczbaPrzejazdow;
+    private int[] czasCzekania;
     private int liczbaCzekan;
 
 
     public void wczytajDane(){
         Scanner scanner = new Scanner(System.in);
         liczbaDni = scanner.nextInt();
+        liczbaPrzejazdow = new int[liczbaDni + 1];
+        czasCzekania = new int[liczbaDni + 1];
         int pojemnoscPrzystanku = scanner.nextInt();
         przystanki = new Przystanek[scanner.nextInt()];
         for (int i = 0; i < przystanki.length; i++)
@@ -54,14 +56,10 @@ public class Symulacja {
     }
 
     public void rozpocznijSymulacje(){
-        sumaPrzejazdow = 0;
-        czasCzekania = 0;
         liczbaCzekan = 0;
-        int przejazdyDnia = 0;
-        int czasCzekaniaDzis = 0;
         for (int i = 1; i <= liczbaDni; i++){
-            przejazdyDnia = 0;
-            czasCzekaniaDzis = 0;
+            liczbaPrzejazdow[i] = 0;
+            czasCzekania[i] = 0;
             dodajPasazerow(i);
             dodajTramwaje(i);
             while (!kolejka.czyPusta()){
@@ -69,18 +67,15 @@ public class Symulacja {
                 z.wykonaj();
                 if (z instanceof TramwajPrzyjechal) {
                     // liczy ile osob wsiadlo (przejechalo) w kazdym zdarzeniu
-                    przejazdyDnia +=
+                    liczbaPrzejazdow[i] +=
                             ((TramwajPrzyjechal) z).getLiczbaPrzejazdow();
                 }
             }
             koniecDnia();
             for (Pasazer pasazer : pasazerowie) {
-                czasCzekaniaDzis += pasazer.getCzasCzekania();
+                czasCzekania[i] += pasazer.getCzasCzekania();
                 liczbaCzekan += pasazer.getLiczbaCzekan();
             }
-            wypiszStatystykiDnia(przejazdyDnia, czasCzekaniaDzis, i);
-            sumaPrzejazdow += przejazdyDnia;
-            czasCzekania += czasCzekaniaDzis;
         }
         wypiszStatystyki();
     }
@@ -175,11 +170,18 @@ public class Symulacja {
     }
 
     public void wypiszStatystyki() {
+        int sumaPrzejazdow = 0;
+        int lacznyCzasCzekania = 0;
+        for (int i = 1; i <= liczbaDni; i++){
+            wypiszStatystykiDnia(liczbaPrzejazdow[i], czasCzekania[i], i);
+            sumaPrzejazdow += liczbaPrzejazdow[i];
+            lacznyCzasCzekania += czasCzekania[i];
+        }
         System.out.println("Łączna liczba przejazdów: " + sumaPrzejazdow);
         int srCzas = 0;
         // czas czekania jest wyrazony w minutach, *60, zeby bylo w sekundach
         if (liczbaCzekan != 0) {
-            srCzas = (60 * czasCzekania) / liczbaCzekan;
+            srCzas = (60 * lacznyCzasCzekania) / liczbaCzekan;
         }
         int godziny = srCzas / 3600;
         int minuty = (srCzas % 3600) / 60;
