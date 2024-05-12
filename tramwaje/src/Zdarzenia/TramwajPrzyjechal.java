@@ -7,9 +7,9 @@ import Symulacja.ListaPasazerow;
 public class TramwajPrzyjechal extends Zdarzenie{
     private Tramwaj tramwaj;
     private Przystanek przystanek;
-    private int liczbaPrzejazdow;
-    private int index;
-    private int kierunek;
+    private int liczbaPrzejazdow;   // ile osob wsiadlo w tym zdarzeniu
+    private int index;              // index aktualnego przystanku
+    private int kierunek;       // kierunek w ktorym jedzie tramwaj (1 lub -1)
 
     public TramwajPrzyjechal(Przystanek przystanek, Tramwaj tramwaj, int d,
                              int m, Zdarzenie z, int index, int kierunek) {
@@ -31,8 +31,6 @@ public class TramwajPrzyjechal extends Zdarzenie{
     public void wykonaj(){
         ListaPasazerow t = tramwaj.getHead().getNext();
         System.out.println(toString());
-        // jesli jest po 23:00 to pasazerowie nie jezdza
-        // czyli dajemy tylko komunikat ze tramwaj przyjechal
         while (t != tramwaj.getTail() && !przystanek.czyPelny()) {
             // szukamy pasazerow ktorzy chca wysiasc na tym przystanku
             if (t.getVal().getCelPodrozy() == przystanek) {
@@ -44,9 +42,10 @@ public class TramwajPrzyjechal extends Zdarzenie{
         int dlugoscTrasy = tramwaj.getLinia().getDlugoscTrasy();
         if ((index == 0 && kierunek == -1) ||
                 (index == dlugoscTrasy - 1 && kierunek == 1)){
-            return; // jesli tramwaj dojechal do konca trasy
+            return; // znaczy ze tramwaj dojechal do konca trasy
         }
         ListaPasazerow p = przystanek.getHead().getNext();
+        // wsiadaja pierwsi z brzegu pasazerowie z przystanku
         while (p != przystanek.getTail() && !tramwaj.czyPelny()) {
             (new PasazerWsiadl(przystanek, tramwaj, getDzien(),
                     getMinuta(), null, kierunek, index)).wykonaj();
