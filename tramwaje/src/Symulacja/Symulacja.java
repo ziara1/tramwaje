@@ -104,8 +104,8 @@ public class Symulacja {
                             (l.getTramwaj(j), dzien, 360 + (odstep * j / 2));
                 } else { // zaczyna na drugim koncu trasy
                     l.getTramwaj(j).ustawKierunek(-1);
-                    dodajTramwaj
-                            (l.getTramwaj(j), dzien, 360 + (odstep * (j - 1) / 2));
+                    dodajTramwaj(l.getTramwaj(j),
+                            dzien, 360 + (odstep * (j - 1) / 2));
                 }
             }
         }
@@ -202,7 +202,6 @@ public class Symulacja {
         System.out.println("Pojemność przystanku: " + pojemnoscPrzystanku);
         System.out.println("Liczba przystankow: " + przystanki.length);
         System.out.println("Przystanki:");
-
         for (Przystanek przystanek : przystanki) {
             System.out.println(przystanek.getNazwa());
         }
@@ -210,13 +209,11 @@ public class Symulacja {
         System.out.println("Pojemność tramwajow: " + pojemnoscTramwaju);
         System.out.println("Liczba linii tramwajowych: " + linie.length);
         System.out.println("Linie tramwajowe:");
-
         for (Linia l : linie) {
             System.out.println("Linia " + l.getnumerLinii() + ":");
             System.out.println("Liczba tramwajow: " + l.getLiczbaTramwajow());
             System.out.println("Dlugosc trasy: " + l.getDlugoscTrasy());
             System.out.println("Trasa:");
-
             for (int i = 0; i < l.getDlugoscTrasy(); i++){
                 System.out.println(l.getPrzystanek(i).getNazwa() + " " +
                         l.getCzasPrzystanku(i));

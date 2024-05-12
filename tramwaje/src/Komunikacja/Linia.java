@@ -40,7 +40,7 @@ public class Linia {
     public Przystanek getPrzystanek(int i){ // i-ty przystanek
         return trasa.getPara(i).getPrzystanek();
     }
-    public int getCzasPrzystanku(int i){ // czas miedzy i-tym a i+1-ym
+    public int getCzasPrzystanku(int i){ // czas miedzy i-tym a i+1-szym
         return trasa.getPara(i).getCzas();
     }
 }
