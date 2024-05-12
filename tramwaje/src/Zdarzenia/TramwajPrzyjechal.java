@@ -49,7 +49,7 @@ public class TramwajPrzyjechal extends Zdarzenie{
         ListaPasazerow p = przystanek.getHead().getNext();
         while (p != przystanek.getTail() && !tramwaj.czyPelny()) {
             (new PasazerWsiadl(przystanek, tramwaj, getDzien(),
-                    getMinuta(), null, kierunek)).wykonaj();
+                    getMinuta(), null, kierunek, index)).wykonaj();
             p = p.getNext();
             liczbaPrzejazdow++; // ile osob wsiadlo w tym zdarzeniu
         }

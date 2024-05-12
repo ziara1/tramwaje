@@ -43,13 +43,4 @@ public class Linia {
     public int getCzasPrzystanku(int i){ // czas miedzy i-tym a i+1-ym
         return trasa.getPara(i).getCzas();
     }
-    public int znajdzIndeks(Przystanek p){
-        for (int i = 0; i < trasa.getDlugoscTrasy(); i++){
-            if (trasa.getPara(i).getPrzystanek().equals(p)){
-                return i;
-            }
-        }
-        assert(true); // jesli nie ma tego przystanku w trasie
-        return -1;
-    }
 }

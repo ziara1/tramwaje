@@ -11,15 +11,17 @@ public class PasazerWsiadl extends Zdarzenie{
     private Tramwaj tramwaj;
     private Przystanek przystanek;
     private int kierunek;
+    private int index;
     
     public PasazerWsiadl(Przystanek przystanek, Tramwaj tramwaj,
-                         int d, int m, Zdarzenie z, int kierunek) {
+                         int d, int m, Zdarzenie z, int kierunek, int index) {
         super(d, m, z);
         // wsiada pierwszy pasazer z brzegu
         this.pasazer = przystanek.pierwszyPasazer();
         this.przystanek = przystanek;
         this.tramwaj = tramwaj;
         this.kierunek = kierunek;
+        this.index = index;
     }
 
     @Override
@@ -34,7 +36,6 @@ public class PasazerWsiadl extends Zdarzenie{
     public void wylosujPrzystanek(){ // losuje przystanek docelowy dla pasazera
         // indeks aktualnego przystanku
         Linia l = tramwaj.getLinia();
-        int index = l.znajdzIndeks(przystanek);
         int cel = 0;
         // w zaleznosci od tego w ktora strone jedzie tramwaj, wybieramy
         // przedzial z ktorego bedziemy losowac przystanek (przed/po tramwaju)

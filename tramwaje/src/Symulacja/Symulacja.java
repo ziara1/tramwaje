@@ -53,6 +53,7 @@ public class Symulacja {
             }
         }
         kolejka = new ListaZdarzen();
+        wypiszDane(pojemnoscPrzystanku, pojemnoscTramwaju);
     }
 
     public void rozpocznijSymulacje(){
@@ -194,6 +195,33 @@ public class Symulacja {
                     + minuty + "m " + sekundy + "s");
         else
             System.out.println("Średni czas czekania: " + sekundy + "s");
+    }
+
+    public void wypiszDane(int pojemnoscPrzystanku, int pojemnoscTramwaju){
+        System.out.println("Liczba dni symulacji: " + liczbaDni);
+        System.out.println("Pojemność przystanku: " + pojemnoscPrzystanku);
+        System.out.println("Liczba przystankow: " + przystanki.length);
+        System.out.println("Przystanki:");
+
+        for (Przystanek przystanek : przystanki) {
+            System.out.println(przystanek.getNazwa());
+        }
+        System.out.println("Liczba pasazerow: " + pasazerowie.length);
+        System.out.println("Pojemność tramwajow: " + pojemnoscTramwaju);
+        System.out.println("Liczba linii tramwajowych: " + linie.length);
+        System.out.println("Linie tramwajowe:");
+
+        for (Linia l : linie) {
+            System.out.println("Linia " + l.getnumerLinii() + ":");
+            System.out.println("Liczba tramwajow: " + l.getLiczbaTramwajow());
+            System.out.println("Dlugosc trasy: " + l.getDlugoscTrasy());
+            System.out.println("Trasa:");
+
+            for (int i = 0; i < l.getDlugoscTrasy(); i++){
+                System.out.println(l.getPrzystanek(i).getNazwa() + " " +
+                        l.getCzasPrzystanku(i));
+            }
+        }
     }
 
 
